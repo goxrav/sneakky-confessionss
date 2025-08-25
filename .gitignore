@@ -1,0 +1,39 @@
+# Node.js dependencies
+
+node_modules/
+
+# Environment variables
+*.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+frontend/build/
+frontend/dist/
+backend/dist/
+backend/build/
+
+# Cache
+.cache/
+.next/
+out/
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# IDE/editor settings
+.vscode/
+*.swp
+*.swo
+*.idea/
+
+# Lock files (optional, if you want to avoid conflicts when switching package managers)
+# yarn.lock
+# pnpm-lock.yaml
+

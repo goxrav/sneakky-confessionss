@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Typewriter Effect */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+.typewriter-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid white;
+  animation: typewriter 3s steps(30, end) 1s forwards, blink 0.75s step-end infinite;
+  max-width: 100%;
+}
+@keyframes hueShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.animate-hue {
+  animation: hueShift 8s infinite linear;
+}
+/* @keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-5deg) scale(1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.2);
+  }
+} */
+
+.animate-wiggle {
+  animation: wiggle 1s infinite ease-in-out;
+}
+.glow-text {
+  text-shadow: 0 0 8px #ff00ff, 0 0 12px #00ffff;
+}
+
+.glow-bg {
+  box-shadow: 0 0 15px #ff00ff, 0 0 20px #00ffff;
+}
+/* Sneaky Mode Styling */
+.sneaky {
+  background: radial-gradient(circle at 20% 20%, #111 20%, #1e1e1e 90%);
+  color: #ff66c4;
+}
+
+.sneaky .emoji-badge {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+
+
