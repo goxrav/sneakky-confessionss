@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE = process.env.REACT_APP_API_URL;
 
 const ConfessionPreview = () => {
   const [confessions, setConfessions] = useState([]);

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { AnimatePresence, motion } from "framer-motion";
 import Masonry from 'react-masonry-css';
 import PageWrapper from "../components/PageWrapper";
+const API_BASE = process.env.REACT_APP_API_URL;
 
 const getOrCreateUUID = () => {
   const stored = localStorage.getItem("uuid");
