@@ -44,7 +44,7 @@ let debounceTimeout = null;
 
   const fetchConfessions = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/confess?sort=${sort}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/confess?sort=${sort}`);
       const data = await res.json();
       setConfessions(data);
     } catch (err) {
@@ -68,7 +68,7 @@ useEffect(() => {
 
 const handleReport = async (id) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/confess/${id}/report`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/confess/${id}/report`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uuid }),
@@ -92,7 +92,7 @@ const handleReport = async (id) => {
   if (debounceTimeout) clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/confess/${id}/react`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/confess/${id}/react`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, uuid }),
