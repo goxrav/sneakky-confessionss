@@ -6,7 +6,7 @@ const ReportedConfessions = () => {
   const [reported, setReported] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/confess/reported")
+    fetch(`${process.env.REACT_APP_API_URL}/api/confess/reported`)
       .then((res) => res.json())
       .then((data) => setReported(data))
       .catch(() => toast.error("Failed to load reported confessions"));
@@ -14,7 +14,7 @@ const ReportedConfessions = () => {
 
   const handleAction = async (id, action) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/confess/${id}/${action}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/${action}`, {
         method: "PATCH",
       });
       const data = await res.json();
