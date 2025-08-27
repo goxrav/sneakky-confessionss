@@ -25,7 +25,7 @@ const ModerateConfessions = () => {
 
   const handleApprove = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/confess/${id}/approve`);
+      await axios.patch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/approve`);
       toast.success("✅ Confession approved!");
       setConfessions((prev) => prev.filter((c) => c._id !== id));
     } catch (err) {
@@ -35,7 +35,7 @@ const ModerateConfessions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/confess/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/confess/${id}`);
       toast.error("🗑️ Confession deleted.");
       setConfessions((prev) => prev.filter((c) => c._id !== id));
     } catch (err) {
@@ -45,7 +45,7 @@ const ModerateConfessions = () => {
 
   const handleReport = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/confess/${id}/report`);
+      await axios.patch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/report`);
       toast("🚩 Confession reported.");
     } catch (err) {
       toast.error("Failed to report confession");
