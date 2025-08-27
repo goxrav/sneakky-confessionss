@@ -13,7 +13,7 @@ const ConfessionPreview = () => {
   useEffect(() => {
     const fetchConfessions = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/confess/approved`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/confess/approved`);
         setConfessions(res.data.slice(0, 5)); // Show only top 5
       } catch (err) {
         console.error("❌ Error fetching confessions:", err);
@@ -24,7 +24,7 @@ const ConfessionPreview = () => {
 
  const handleReaction = async (id, type) => {
   try {
-    const res = await fetch(`${API_BASE}/confess/${id}/react`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/react`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type }),

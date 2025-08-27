@@ -132,7 +132,7 @@ const handleReport = async (id) => {
 
   const handleUndoReaction = async (id, type) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/confess/${id}/react`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/react`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ emoji: type, uuid }), // backend expects `emoji`
