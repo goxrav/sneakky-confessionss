@@ -69,7 +69,7 @@ useEffect(() => {
 
 const handleReport = async (id) => {
   try {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/confess/${id}/report`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/report`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uuid }),
@@ -93,7 +93,7 @@ const handleReport = async (id) => {
   if (debounceTimeout) clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/confess/${id}/react`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess/${id}/react`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, uuid }),
