@@ -45,7 +45,7 @@ let debounceTimeout = null;
 
   const fetchConfessions = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/confess?sort=${sort}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess?sort=${sort}`);
       const data = await res.json();
       setConfessions(data);
     } catch (err) {

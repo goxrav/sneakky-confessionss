@@ -12,7 +12,7 @@ const ModerateConfessions = () => {
   useEffect(() => {
     const fetchConfessions = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/confess/pending");
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/confess/pending`);
         setConfessions(res.data);
       } catch (err) {
         toast.error("Failed to fetch confessions 😓");
