@@ -49,7 +49,7 @@ const ConfessionForm = () => {
   return (
     <PageWrapper>
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <Toaster position="top-center" richColors />
+      
 
       {showConfetti && (
         <Confetti width={window.innerWidth} height={window.innerHeight} />
