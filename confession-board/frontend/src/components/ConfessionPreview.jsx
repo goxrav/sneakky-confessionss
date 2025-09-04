@@ -8,15 +8,19 @@ const API_BASE = process.env.REACT_APP_API_URL;
 const ConfessionPreview = () => {
   const [confessions, setConfessions] = useState([]);
   const [activeConfession, setActiveConfession] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchConfessions = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/confess/approved`);
-        setConfessions(res.data.slice(0, 5)); // Show only top 5
+        setConfessions(res.data.slice(0, 5));
       } catch (err) {
         console.error("❌ Error fetching confessions:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchConfessions();
@@ -76,41 +80,45 @@ const ConfessionPreview = () => {
         Recent Confessions 🔥
       </h2>
 
-      <div className="flex gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-pink-300 scrollbar-track-transparent pb-4 px-2">
-        {confessions.map((confess, index) => (
-          <motion.div
-            key={index}
-            onClick={() => setActiveConfession(confess)}
-            className="min-w-[250px] max-w-xs p-6 rounded-2xl shadow-lg bg-white/30 dark:bg-gray-800/50 backdrop-blur-lg border border-white/20 text-gray-800 dark:text-white cursor-pointer transition"
-          >
-           <div className="text-2xl">💬</div>
+      {loading ? (
+        <div className="flex justify-center items-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+          <span className="ml-4 text-pink-500">Loading confessions...</span>
+        </div>
+      ) : (
+        <>
+          <div className="flex gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-pink-300 scrollbar-track-transparent pb-4 px-2">
+            {confessions.map((confess, index) => (
+              <motion.div
+                key={index}
+                onClick={() => setActiveConfession(confess)}
+                className="min-w-[250px] max-w-xs p-6 rounded-2xl shadow-lg bg-white/30 dark:bg-gray-800/50 backdrop-blur-lg border border-white/20 text-gray-800 dark:text-white cursor-pointer transition"
+              >
+                <div className="text-2xl">💬</div>
+                <p className="mt-2 text-sm italic line-clamp-3 text-gray-700 dark:text-gray-300 blur-sm hover:blur-none">
+                  {confess.message}
+                </p>
+                {/* ✅ Reaction Preview */}
+                <div className="flex justify-center gap-3 text-lg mt-3">
+                  <span>❤️ {confess.emojiReactions?.like || 0}</span>
+                  <span>😂 {confess.emojiReactions?.laugh || 0}</span>
+                  <span>😢 {confess.emojiReactions?.sad || 0}</span>
+                </div>
+                <div className="mt-2 text-right text-pink-400 dark:text-pink-300 text-xs">💡 Tap to Read More</div>
+              </motion.div>
+            ))}
+          </div>
 
-<p className="mt-2 text-sm italic line-clamp-3 text-gray-700 dark:text-gray-300 blur-sm hover:blur-none">
-  {confess.message}
-</p>
-
-{/* ✅ Reaction Preview */}
-<div className="flex justify-center gap-3 text-lg mt-3">
-  <span>❤️ {confess.emojiReactions?.like || 0}</span>
-  <span>😂 {confess.emojiReactions?.laugh || 0}</span>
-  <span>😢 {confess.emojiReactions?.sad || 0}</span>
-</div>
-
-<div className="mt-2 text-right text-pink-400 dark:text-pink-300 text-xs">💡 Tap to Read More</div>
-
-           
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="flex justify-center mt-6">
-        <button
-          onClick={() => navigate("/feed")}
-          className="px-6 py-2 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-bold shadow hover:scale-105 transition"
-        >
-          🔍 View Full Feed
-        </button>
-      </div>
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => navigate("/feed")}
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-bold shadow hover:scale-105 transition"
+            >
+              🔍 View Full Feed
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Modal */}
       <AnimatePresence>
@@ -139,7 +147,6 @@ const ConfessionPreview = () => {
               <p className="text-sm text-gray-800 dark:text-white leading-relaxed whitespace-pre-wrap">
                 {activeConfession.message}
               </p>
-
               <div className="flex justify-center gap-3 text-lg mt-3">
                 <button onClick={() => handleReaction(activeConfession._id, "like")}>
                   ❤️ {activeConfession.emojiReactions?.like || 0}
@@ -151,8 +158,6 @@ const ConfessionPreview = () => {
                   😢 {activeConfession.emojiReactions?.sad || 0}
                 </button>
               </div>
-
-              
             </motion.div>
           </motion.div>
         )}

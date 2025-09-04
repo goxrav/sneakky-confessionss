@@ -97,7 +97,7 @@ router.patch("/:id/report", async (req, res) => {
 // GET /api/confess/approved
 router.get("/approved", async (req, res) => {
   try {
-    const approvedConfessions = await Confession.find({ isApproved: true }).sort({ createdAt: -1 });
+    const approvedConfessions = await Confession.find({ isApproved: true }).sort({ createdAt: -1 }).limit(5);
     res.json(approvedConfessions);
   } catch (err) {
     res.status(500).json({ error: "Server error" });

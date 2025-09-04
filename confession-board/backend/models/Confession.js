@@ -57,9 +57,9 @@ emojiReactionsMeta: {
   default: () => new Map(),
 },
 
-
-
-
 });
+
+// Add index for faster queries
+confessionSchema.index({ isApproved: 1, createdAt: -1 });
 
 module.exports = mongoose.model("Confession", confessionSchema);
