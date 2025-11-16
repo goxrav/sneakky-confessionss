@@ -22,6 +22,9 @@ const ConfessionFeed = () => {
   const [reportedConfessions, setReportedConfessions] = useState(
   JSON.parse(localStorage.getItem("reportedConfessions") || "{}")
 );
+const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
 useEffect(() => {
   localStorage.setItem("reportedConfessions", JSON.stringify(reportedConfessions));
@@ -43,10 +46,27 @@ useEffect(() => {
   const uuid = getOrCreateUUID();
 let debounceTimeout = null; 
 
-  const fetchConfessions = async () => {
+  const fetchConfessions = async (pageToFetch, isNewSort = false) => {
+    if (isLoading) return;
+    setIsLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess?sort=${sort}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess?sort=${sort}&page=${pageToFetch}&limit=20`);
       const data = await res.json();
+      if (data.confessions) {
+        setConfessions((prevConfessions) => {
+          // If it's a new sort, replace the list. Otherwise, append to it.
+          return isNewSort
+            ? data.confessions
+            : [...prevConfessions, ...data.confessions];
+        });
+        setPage(pageToFetch);
+        setTotalPages(data.totalPages);
+      } else {
+        setConfessions(data);
+      }
+      setIsLoading(false);
+
+
       setConfessions(data);
     } catch (err) {
       console.error("❌ Failed to fetch:", err);
@@ -54,8 +74,9 @@ let debounceTimeout = null;
   };
 
   useEffect(() => {
+    setConfessions([]);
     
-    fetchConfessions();
+    fetchConfessions(1, true);
   }, [sort]);
   useEffect(() => {
   const saved = JSON.parse(localStorage.getItem("userReactions") || "{}");
@@ -87,6 +108,17 @@ const handleReport = async (id) => {
     toast.error("❌ Error reporting confession");
   }
 };
+
+const handleLoadMore = () => {
+    // Fetch the NEXT page if we aren't on the last page
+    if (page < totalPages) {
+      fetchConfessions(page + 1); // This will append new confessions
+    }
+  };
+
+
+
+
 
 
   const handleReact = (id, type) => {
@@ -276,6 +308,20 @@ const handleReport = async (id) => {
     </AnimatePresence>
   </div>
 )}
+<div className="flex flex-col items-center justify-center w-full mt-6">
+  {isLoading && <p className="text-gray-500 dark:text-gray-400">Loading confessions...</p>}
+  {!isLoading && page < totalPages && (
+    <button
+      onClick={handleLoadMore}
+      className="px-6 py-3 rounded-lg bg-pink-600 text-white font-semibold shadow hover:bg-pink-700 transition-all"
+    >
+      Load More
+    </button>
+  )}
+  {!isLoading && page >= totalPages && confessions.length > 0 && (
+    <p className="text-gray-500 dark:text-gray-400">You've reached the end!</p>
+  )}
+</div>
 
     </div>
     </PageWrapper>
