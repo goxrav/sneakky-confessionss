@@ -41,10 +41,21 @@ router.post("/", async (req, res) => {
 // GET all approved confessions
 router.get("/", async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20; // Default to 20 confessions per page
+    const skip = (page - 1) * limit; // Calculate how many to skip
     const confessions = await Confession.find({ isApproved: true }).sort({
       createdAt: -1,
-    });
-    res.json(confessions);
+    })
+    .skip(skip)
+      .limit(limit)
+      .lean(); // .lean() makes the query faster;
+const totalConfessions = await Confession.countDocuments({ isApproved: true });
+   res.json({
+      confessions: confessions, // The confessions for this page
+      totalPages: Math.ceil(totalConfessions / limit), // How many pages in total
+      currentPage: page, // The current page number
+    });
   } catch (err) {
     console.error("❌ Error fetching confessions:", err.message);
     res.status(500).json({ error: "Failed to fetch confessions" });
