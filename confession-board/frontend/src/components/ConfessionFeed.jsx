@@ -50,8 +50,11 @@ let debounceTimeout = null;
     if (isLoading) return;
     setIsLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/confess?sort=${sort}&page=${pageToFetch}&limit=20`);
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/confess?sort=${sort}&page=${pageToFetch}&limit=20`
+      );
       const data = await res.json();
+
       if (data.confessions) {
         setConfessions((prevConfessions) => {
           // If it's a new sort, replace the list. Otherwise, append to it.
@@ -62,14 +65,18 @@ let debounceTimeout = null;
         setPage(pageToFetch);
         setTotalPages(data.totalPages);
       } else {
-        setConfessions(data);
+        // This 'else' block will catch any errors if data.confessions doesn't exist
+        console.error("Failed to get confessions from response:", data);
       }
-      setIsLoading(false);
+      
+      // 🚨 BUGGY LINE REMOVED FROM HERE 🚨
+      // setConfessions(data); <--- THIS WAS THE BUG. It's gone now.
 
-
-      setConfessions(data);
     } catch (err) {
       console.error("❌ Failed to fetch:", err);
+    } finally {
+      // This 'finally' block runs whether the try or catch did
+      setIsLoading(false); // <-- THIS IS THE CORRECT PLACE FOR IT
     }
   };
 
